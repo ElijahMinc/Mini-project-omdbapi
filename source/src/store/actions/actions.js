@@ -73,26 +73,26 @@ export const getSearchRepose = (API_URL, sValue) => {
 };
 
 
-export const getRepose = (API_URL, prevPage = 0, nextPage = 1) => {
-   return (dispatch) => {
-      dispatch(changeStatusFetch(true))
-      const repose = () => {
-         const filterIdMovies = idMovies.slice(prevPage * DEFAULT_LIMIT, nextPage * DEFAULT_LIMIT)
-         let repose = []
-         for (let i = 0; i < filterIdMovies.length; i++) {
-            const id = filterIdMovies[i];
-            fetch(`${API_URL}&i=${id}`)
+export const getRepose =
+   (API_URL, prevPage = 0, nextPage = 1) =>
+      async (dispatch) => {
+         dispatch(changeStatusFetch(true))
+
+         const filterIdMovies = idMovies.slice(
+            prevPage * DEFAULT_LIMIT,
+            nextPage * DEFAULT_LIMIT
+         );
+
+         let repose = [];
+
+         for (let id of filterIdMovies) {
+            await fetch(`${API_URL}&i=${id}`)
                .then(request => request.json())
                .then(response => repose.push(response))
                .catch(error => console.log(error))
          }
-         return repose
-      }
-      const getRepose = repose()
-      setTimeout(() => {
-         dispatch(setRepose(getRepose))
+
+         dispatch(setRepose(repose))
          dispatch(changeStatusFetch(false))
-      }, 1000)
-   };
-};
+      };
 
