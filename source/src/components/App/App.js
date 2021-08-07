@@ -29,9 +29,20 @@ const App = () => {
 
 
 
-  const handlerInputValue = (event) => {
-    setInputValue(event.target.value)
+   const debounce = (fn, ms) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => fn(...args), ms)
+    }
   }
+
+  const handlerInputValue = React.useCallback(
+    debounce((event) => {
+      setInputValue(event.target.value)
+    }, 500),
+    []
+  )
 
   React.useEffect(() => {
     dispatch(getSearchRepose(API_URL, inputValue))
