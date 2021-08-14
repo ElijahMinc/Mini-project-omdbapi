@@ -1,0 +1,9 @@
+.wrapper {
+   max-width: 1100px;
+   margin: 0 auto;
+   min-height: 100%;
+}
+.page {
+   color: white;
+   text-align: right;
+}
